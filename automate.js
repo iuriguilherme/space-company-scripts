@@ -1,5 +1,5 @@
 /*
- * basicAutomation.js for Space Company v0.5.1
+ * automate.js for Space Company v0.5.1
  * Winners don't use copyright
  * 
  * The latest version of this script should be at 
@@ -61,17 +61,6 @@ function automateMetalStorage() {
   }
 }
 
-function automateEnergy() {
-  if (solarPanel > 0) {
-    while (
-      metal > solarPanelMetalCost &&
-      gem > solarPanelGemCost
-    ) {
-      getSolarPanel();
-    }
-  }
-}
-
 function automateLabs() {
   if (
     labT5 > 0 &&
@@ -111,11 +100,74 @@ function automateLabs() {
   }
 }
 
+function automateEnergy() {
+  automateSolarEnergy();
+  automateCharcoalEnergy();
+  automateMethaneEnergy();
+}
+
 function automateEarthResources() {
   automateMetal();
   automateWood();
   automateGem();
   automateOil();
+  automateSilicon();
+  automateCharcoal();
+}
+
+/*
+function automateInnerPlanetaryResources() {
+  automateLunarite();
+  automateMethane();
+  automateTitanium();
+  automateGold();
+  automateSilver();
+}
+*/
+
+function automateSolarEnergy() {
+  if (solarPanel > 0) {
+    while (
+      metal > solarPanelMetalCost &&
+      gem > solarPanelGemCost
+    ) {
+      getSolarPanel();
+    }
+  }
+}
+
+function automateCharcoalEnergy() {
+  if (
+    charcoalEngine > 0 &&
+    charcoalps > (charcoalEngineCharcoalInput * charcoalEngine) &&
+    metal > charcoalEngineMetalCost &&
+    gem > charcoalEngineGemCost
+  ) {
+    while (
+      charcoalps > (charcoalEngineCharcoalInput * charcoalEngine) &&
+      metal > charcoalEngineMetalCost &&
+      gem > charcoalEngineGemCost
+    ) {
+      getCharcoalEngine();
+    }
+  }
+}
+
+function automateMethaneEnergy() {
+  if (
+    methaneStation > 0 &&
+    methaneps > (methaneStationMethaneInput * methaneStation) &&
+    lunarite > methaneStationLunariteCost &&
+    titanium > methaneStationTitaniumCost
+  ) {
+    while (
+      methaneps > (methaneStationMethaneInput * methaneStation) &&
+      lunarite > methaneStationLunariteCost &&
+      titanium > methaneStationTitaniumCost
+    ) {
+      getMethaneStation();
+    }
+  }
 }
 
 function automateMetal() {
@@ -281,3 +333,109 @@ function automateOil() {
   }
 }
 
+function automateSilicon() {
+  if (
+    tardis > 0 &&
+    energyps > tardisEnergyInput &&
+    titanium > tardisTitaniumCost &&
+    silicon > tardisSiliconCost &&
+    meteorite > tardisMeteoriteCost
+  ) {
+    while (
+      energyps > tardisEnergyInput &&
+      titanium > tardisTitaniumCost &&
+      silicon > tardisSiliconCost &&
+      meteorite > tardisMeteoriteCost
+    ) {
+      getTardis();
+    }
+  } else if (
+    scorcher > 0 &&
+    energyps > scorcherEnergyInput &&
+    lunarite > scorcherLunariteCost &&
+    gem > scorcherGemCost &&
+    oil > scorcherOilCost
+  ) {
+    while (
+      energyps > scorcherEnergyInput &&
+      lunarite > scorcherLunariteCost &&
+      gem > scorcherGemCost &&
+      oil > scorcherOilCost
+    ) {
+      getScorcher();
+    }
+  } else if (blowtorch > 0) {
+    while (
+      lunarite > blowtorchLunariteCost &&
+      titanium > blowtorchTitaniumCost
+    ) {
+      getBlowtorch();
+    }
+  }
+}
+
+function automateCharcoal() {
+  if (
+    microPollutor > 0 &&
+    woodps > (
+      (microPollutorWoodInput * microPollutor) +
+      (furnaceWoodInput * furnace) +
+      (woodburnerWoodInput * woodburner)
+    ) &&
+    energyps > microPollutorEnergyInput &&
+    metal > microPollutorMetalCost &&
+    wood > microPollutorWoodCost &&
+    lava > microPollutorLavaCost
+  ) {
+    while (
+      woodps > (
+        (microPollutorWoodInput * microPollutor) +
+        (furnaceWoodInput * furnace) +
+        (woodburnerWoodInput * woodburner)
+      ) &&
+      energyps > microPollutorEnergyInput &&
+      metal > microPollutorMetalCost &&
+      wood > microPollutorWoodCost &&
+      lava > microPollutorLavaCost
+    ) {
+      getMicroPollutor();
+    }
+  } else if (
+    furnace > 0 &&
+    woodps > (
+      (microPollutorWoodInput * microPollutor) +
+      (furnaceWoodInput * furnace) +
+      (woodburnerWoodInput * woodburner)
+    ) &&
+    energyps > furnaceEnergyInput &&
+    metal > furnaceMetalCost &&
+    wood > furnaceWoodCost &&
+    oil > furnaceOilCost
+  ) {
+    while (
+      woodps > (
+        (microPollutorWoodInput * microPollutor) +
+        (furnaceWoodInput * furnace) +
+        (woodburnerWoodInput * woodburner)
+      ) &&
+      energyps > furnaceEnergyInput &&
+      metal > furnaceMetalCost &&
+      wood > furnaceWoodCost &&
+      oil > furnaceOilCost
+    ) {
+      getFurnace();
+    }
+  } else if (woodburner > 0) {
+    while (
+      woodps > (
+        (microPollutorWoodInput * microPollutor) +
+        (furnaceWoodInput * furnace) +
+        (woodburnerWoodInput * woodburner)
+      ) &&
+      metal > woodburnerMetalCost &&
+      wood > woodburnerWoodCost
+    ) {
+      getWoodburner();
+    }
+  }  
+}
