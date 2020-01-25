@@ -8,22 +8,33 @@
  *  https://github.com/sparticle999/SpaceCompany
  * 
  * This script automates some upgrades.
- * Use with a javascript tool like scratchpad or just paste everything in 
- * the browser console.
- * Use start() to begin the loop.
- * Use stop() to finish the loop.
+ * Use with a javascript tool like scratchpad or just paste everything 
+ * in the browser console.
+ * Use automateStart() to begin the loop.
+ * Use automateStop() to finish the loop.
+ * 
+ * DISCLAIMER: Using this may spoil the game. If you get bored by using 
+ * this, it is your fault, not mine. I wrote this because I was bored, 
+ * this is provided for educational purposes.
 */
 
-// Set the interval for the loop in milliseconds. Defaults to 10 seconds
+// Set the interval for the loop in milliseconds. Defaults to 10 seconds 
 // (10000 milliseconds)
-var interval = 10000;
+var automateInterval = 10000;
 
 // Uncomment the desired functions in the desired order
-function loopFunction() {
+function automateLoopFunction() {
+  // Automatically upgrades Storages of elements which needs Lunarite to be 
+  // upgraded when they're full
   automateLunariteStorage();
+  // Automatically upgrades storages of elements which needs Metal to be 
+  // upgraded when they're full
   automateMetalStorage();
+  // Buy every possible energy producers
   automateEnergy();
+  // Buy every possible earth resources producers, from tier 5 to tier 1
   automateEarthResources();
+  // Buy every possible lab, from tier 5 to tier 1
   automateLabs();
 }
 
@@ -33,36 +44,51 @@ function loopFunction() {
  * ===============================================
 */
 
-function start() {
-  var loopVar = setInterval(
-    loopFunction(),
-    interval
+var automateName = "automate.js";
+
+function automateLog(automateMessage) {
+  console.log("[" + automateName + "]: " + automateMessage);
+}
+
+function automateStart() {
+  automateLog("Starting " + automateName + "...");
+  var automateLoopVar = setInterval(
+    automateLoopFunction,
+    automateInterval
   );
 }
 
-function stop () {
-  clearInterval(loopVar);
+function automateStop () {
+  automateLog("Stopping " + automateName + "...");
+  clearInterval(automateLoopVar);
 }
 
 function automateLunariteStorage() {
   if (lunarite == lunariteStorage) {
+    automateLog("Attempt to upgrade Lunarite Storage...");
     upgradeLunariteStorage();
+  } else if (silicon == siliconStorage) {
+    automateLog("Attempt to upgrade Silicon Storage...");
+    upgradeSiliconStorage();
   }
 }
 
 function automateMetalStorage() {
   if (metal == metalStorage) {
+    automateLog("Attempt to upgrade Metal Storage...");
     upgradeMetalStorage();
   } else if (wood == woodStorage) {
+    automateLog("Attempt to upgrade Wood Storage...");
     upgradeWoodStorage();
   } else if (gem == gemStorage) {
+    automateLog("Attempt to upgrade Gem Storage...");
     upgradeGemStorage();
   } else if (oil == oilStorage) {
+    automateLog("Attempt to upgrade Oil Storage...");
     upgradeOilStorage();
   } else if (charcoal == charcoalStorage) {
+    automateLog("Attempt to upgrade Charcoal Storage...");
     upgradeCharcoalStorage();
-  } else if (silicon == siliconStorage) {
-    upgradeSiliconStorage();
   }
 }
 
@@ -73,35 +99,70 @@ function automateLabs() {
     gem > labT5GemCost &&
     wood > labT5WoodCost
   ) {
-    getLabT5();
+    while (
+      metal > labT5MetalCost &&
+      gem > labT5GemCost &&
+      wood > labT5WoodCost
+    ) {
+      automateLog("Attempt to buy Laboratory Tier 5...");
+      getLabT5();
+    }
   } else if (
     labT4 > 0 &&
     metal > labT4MetalCost &&
     gem > labT4GemCost &&
     wood > labT4WoodCost
   ) {
-    getLabT4();
+    while (
+      metal > labT4MetalCost &&
+      gem > labT4GemCost &&
+      wood > labT4WoodCost
+    ) {
+      automateLog("Attempt to buy Laboratory Tier 4...");
+      getLabT4();
+    }
   } else if (
     labT3 > 0 &&
     metal > labT3MetalCost &&
     gem > labT3GemCost &&
     wood > labT3WoodCost
   ) {
-    getLabT3();
+    while (
+      metal > labT3MetalCost &&
+      gem > labT3GemCost &&
+      wood > labT3WoodCost
+    ) {
+      automateLog("Attempt to buy Laboratory Tier 3...");
+      getLabT3();
+    }
   } else if (
     labT2 > 0 &&
     metal > labT2MetalCost &&
     gem > labT2GemCost &&
     wood > labT2WoodCost
   ) {
-    getLabT2();
+    while (
+      metal > labT2MetalCost &&
+      gem > labT2GemCost &&
+      wood > labT2WoodCost
+    ) {
+      automateLog("Attempt to buy Laboratory Tier 2...");
+      getLabT2();
+    }
   } else if (
     lab > 0 &&
     metal > labMetalCost &&
     gem > labGemCost &&
     wood > labWoodCost
   ) {
-    getLab();
+    while (
+      metal > labMetalCost &&
+      gem > labGemCost &&
+      wood > labWoodCost
+    ) {
+      automateLog("Attempt to buy Laboratory Tier 1...");
+      getLab();
+    }
   }
 }
 
@@ -131,11 +192,16 @@ function automateInnerPlanetaryResources() {
 */
 
 function automateSolarEnergy() {
-  if (solarPanel > 0) {
+  if (
+    solarPanel > 0 &&
+    metal > solarPanelMetalCost &&
+    gem > solarPanelGemCost
+  ) {
     while (
       metal > solarPanelMetalCost &&
       gem > solarPanelGemCost
     ) {
+      automateLog("Attempt to buy Solar Panel...");
       getSolarPanel();
     }
   }
@@ -153,6 +219,7 @@ function automateCharcoalEnergy() {
       metal > charcoalEngineMetalCost &&
       gem > charcoalEngineGemCost
     ) {
+      automateLog("Attempt to buy Charcoal Engine...");
       getCharcoalEngine();
     }
   }
@@ -170,6 +237,7 @@ function automateMethaneEnergy() {
       lunarite > methaneStationLunariteCost &&
       titanium > methaneStationTitaniumCost
     ) {
+      automateLog("Attempt to buy Charcoal Engine...");
       getMethaneStation();
     }
   }
@@ -189,6 +257,7 @@ function automateMetal() {
       gold > multiDrillGoldCost &&
       oil > multiDrillOilCost
     ) {
+      automateLog("Attempt to buy Tier 5 Metal Producer...");
       getMultiDrill();
     }
   } else if (
@@ -204,13 +273,19 @@ function automateMetal() {
       gem > heavyDrillGemCost &&
       oil > heavyDrillOilCost
     ) {
+      automateLog("Attempt to buy Tier 2 Metal Producer...");
       getHeavyDrill();
     }
-  } else if (miner > 0) {
+  } else if (
+      miner > 0 &&
+      metal > minerMetalCost &&
+      wood > minerWoodCost
+    ) {
     while (
       metal > minerMetalCost &&
       wood > minerWoodCost
     ) {
+      automateLog("Attempt to buy Tier 1 Metal Producer...");
       getMiner();
     }
   }
@@ -230,6 +305,7 @@ function automateWood() {
       gem > forestGemCost &&
       hydrogen > forestHydrogenCost
     ) {
+      automateLog("Attempt to buy Tier 5 Wood Producer...");
       getForest();
     }
   } else if (
@@ -245,13 +321,19 @@ function automateWood() {
       gem > laserCutterGemCost &&
       oil > laserCutterOilCost
     ) {
+      automateLog("Attempt to buy Tier 2 Wood Producer...");
       getLaserCutter();
     }
-  } else if (woodcutter > 0) {
+  } else if (
+    woodcutter > 0 &&
+    metal > woodcutterMetalCost &&
+    wood > woodcutterWoodCost
+    ) {
     while (
       metal > woodcutterMetalCost &&
       wood > woodcutterWoodCost
     ) {
+      automateLog("Attempt to buy Tier 1 Wood Producer...");
       getWoodcutter();
     }
   }
@@ -271,6 +353,7 @@ function automateGem() {
       charcoal > diamondChamberCharcoalCost &&
       meteorite > diamondChamberMeteoriteCost
     ) {
+      automateLog("Attempt to buy Tier 5 Gem Producer...");
       getDiamondChamber();
     }
   } else if (
@@ -285,13 +368,20 @@ function automateGem() {
       metal > advancedDrillMetalCost &&
       gem > advancedDrillGemCost &&
       oil > advancedDrillOilCost
-    )
-    getAdvancedDrill();
-  } else if (gemMiner > 0) {
+    ) {
+      automateLog("Attempt to buy Tier 2 Gem Producer...");
+      getAdvancedDrill();
+    }
+  } else if (
+    gemMiner > 0 &&
+    metal > gemMinerMetalCost &&
+    gem > gemMinerGemCost
+  ) {
     while (
       metal > gemMinerMetalCost &&
       gem > gemMinerGemCost
     ) {
+      automateLog("Attempt to buy Tier 1 Gem Producer...");
       getGemMiner();
     }
   }
@@ -311,6 +401,7 @@ function automateOil() {
       charcoal > fossilatorCharcoalCost &&
       lava > fossilatorLavaCost
     ) {
+      automateLog("Attempt to buy Tier 5 Oil Producer...");
       getFossilator();
     }
   } else if (
@@ -326,13 +417,19 @@ function automateOil() {
       gem > pumpjackGemCost &&
       oil > pumpjackOilCost
     ) {
+      automateLog("Attempt to buy Tier 2 Oil Producer...");
       getPumpjack();
     }
-  } else if (pump > 0) {
+  } else if (
+    pump > 0 &&
+    metal > pumpMetalCost &&
+    gem > pumpGemCost
+  ) {
     while (
       metal > pumpMetalCost &&
       gem > pumpGemCost
     ) {
+      automateLog("Attempt to buy Tier 1 Oil Producer...");
       getPump();
     }
   }
@@ -352,6 +449,7 @@ function automateSilicon() {
       silicon > tardisSiliconCost &&
       meteorite > tardisMeteoriteCost
     ) {
+      automateLog("Attempt to buy Tier 5 Silicon Producer...");
       getTardis();
     }
   } else if (
@@ -367,13 +465,19 @@ function automateSilicon() {
       gem > scorcherGemCost &&
       oil > scorcherOilCost
     ) {
+      automateLog("Attempt to buy Tier 2 Silicon Producer...");
       getScorcher();
     }
-  } else if (blowtorch > 0) {
+  } else if (
+    blowtorch > 0 &&
+    lunarite > blowtorchLunariteCost &&
+    titanium > blowtorchTitaniumCost
+    ) {
     while (
       lunarite > blowtorchLunariteCost &&
       titanium > blowtorchTitaniumCost
     ) {
+      automateLog("Attempt to buy Tier 1 Silicon Producer...");
       getBlowtorch();
     }
   }
@@ -403,6 +507,7 @@ function automateCharcoal() {
       wood > microPollutorWoodCost &&
       lava > microPollutorLavaCost
     ) {
+      automateLog("Attempt to buy Tier 5 Charcoal Producer...");
       getMicroPollutor();
     }
   } else if (
@@ -428,9 +533,19 @@ function automateCharcoal() {
       wood > furnaceWoodCost &&
       oil > furnaceOilCost
     ) {
+      automateLog("Attempt to buy Tier 2 Charcoal Producer...");
       getFurnace();
     }
-  } else if (woodburner > 0) {
+  } else if (
+    woodburner > 0 &&
+    woodps > (
+      (microPollutorWoodInput * microPollutor) +
+      (furnaceWoodInput * furnace) +
+      (woodburnerWoodInput * woodburner)
+    ) &&
+    metal > woodburnerMetalCost &&
+    wood > woodburnerWoodCost
+  ) {
     while (
       woodps > (
         (microPollutorWoodInput * microPollutor) +
@@ -440,8 +555,8 @@ function automateCharcoal() {
       metal > woodburnerMetalCost &&
       wood > woodburnerWoodCost
     ) {
+      automateLog("Attempt to buy Tier 1 Charcoal Producer...");
       getWoodburner();
     }
   }  
 }
-
