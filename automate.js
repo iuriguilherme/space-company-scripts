@@ -58,6 +58,8 @@ function automateMetalStorage() {
     upgradeOilStorage();
   } else if (charcoal == charcoalStorage) {
     upgradeCharcoalStorage();
+  } else if (silicon == siliconStorage) {
+    upgradeSiliconStorage();
   }
 }
 
