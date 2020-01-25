@@ -8,8 +8,9 @@
  *  https://github.com/sparticle999/SpaceCompany
  * 
  * This script automates some upgrades.
- * Use with a javascript tool like scratchpad or just paste everything in the
- * browser console.
+ * Use with a javascript tool like scratchpad or just paste everything in 
+ * the browser console.
+ * Use start() to begin the loop.
  * Use stop() to finish the loop.
 */
 
@@ -32,13 +33,15 @@ function loopFunction() {
  * ===============================================
 */
 
-var loop = setInterval(
-  loopFunction(),
-  interval
-);
+function start() {
+  var loopVar = setInterval(
+    loopFunction(),
+    interval
+  );
+}
 
 function stop () {
-  clearInterval(loop);
+  clearInterval(loopVar);
 }
 
 function automateLunariteStorage() {
@@ -441,3 +444,4 @@ function automateCharcoal() {
     }
   }  
 }
+
