@@ -44,6 +44,8 @@ function automateLoopFunction() {
  * ===============================================
 */
 
+var automateLoopVar;
+
 var automateName = "automate.js";
 
 function automateLog(automateMessage) {
@@ -52,7 +54,7 @@ function automateLog(automateMessage) {
 
 function automateStart() {
   automateLog("Starting " + automateName + "...");
-  var automateLoopVar = setInterval(
+  automateLoopVar = setInterval(
     automateLoopFunction,
     automateInterval
   );
