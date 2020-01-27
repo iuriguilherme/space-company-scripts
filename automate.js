@@ -40,7 +40,12 @@ function automateLoopFunction() {
   automateEarthResources();
   // Buy every possible inner planetary resourcers producers, from 
   //  tier 5 to tier 1
-  automateEarthResources();
+  automateInnerPlanetaryResources();
+  // Buy every possible outer planetary resourcers producers, from 
+  //  tier 5 to tier 1
+  automateOuterPlanetaryResources();
+  // Buy every possible wonder resourcers producers, from tier 5 to tier 1
+  automateWonderResources();
   // Buy every possible lab, from tier 5 to tier 1
   automateLabs();
 }
@@ -114,6 +119,9 @@ function automateEnergy() {
   automateSolarEnergy();
   automateCharcoalEnergy();
   automateMethaneEnergy();
+  automateUraniumEnergy();
+  //automateLavaEnergy();
+  automateHydrogenHeliumEnergy();
 }
 
 function automateEarthResources() {
@@ -133,14 +141,17 @@ function automateInnerPlanetaryResources() {
   automateSilver();
 }
 
-/*
 function automateOuterPlanetaryResources() {
   automateHydrogen();
   automateHelium();
   automateIce();
-  automateMeteorite();
+  //automateMeteorite();
 }
-*/
+
+function automateWonderResources() {
+  automateUranium();
+  //automateLava();
+}
 
 // FIXME gave up on packaging and brought it all back
 
@@ -169,6 +180,22 @@ function automateLunariteStorage() {
       automateLog("Attempt to upgrade Silver Storage...");
       upgradeSilverStorage();
     }
+    if (hydrogen == hydrogenStorage) {
+      automateLog("Attempt to upgrade Hydrogen Storage...");
+      upgradeHydrogenStorage();
+    }
+    if (helium == heliumStorage) {
+      automateLog("Attempt to upgrade Helium Storage...");
+      upgradeHeliumStorage();
+    }
+    if (ice == iceStorage) {
+      automateLog("Attempt to upgrade Ice Storage...");
+      upgradeIceStorage();
+    }
+    if (uranium == uraniumStorage) {
+      automateLog("Attempt to upgrade Uranium Storage...");
+      upgradeUraniumStorage();
+    }
   }
 }
 
@@ -196,6 +223,7 @@ function automateMetalStorage() {
   }
 }
 
+// Javascript doesn't have a while-else construct, so it has to be this way.
 function automateLabs() {
   if (
     labT5 > 0 &&
@@ -289,16 +317,16 @@ function automateSolarEnergy() {
 function automateCharcoalEnergy() {
   if (
     charcoalEngine > 0 &&
-    charcoalps > (charcoalEngineCharcoalInput * charcoalEngine) &&
+    charcoalps > charcoalEngineCharcoalInput * 2 &&
     metal > charcoalEngineMetalCost &&
     gem > charcoalEngineGemCost
   ) {
     while (
-      charcoalps > (charcoalEngineCharcoalInput * charcoalEngine) &&
+      charcoalps > charcoalEngineCharcoalInput * 2 &&
       metal > charcoalEngineMetalCost &&
       gem > charcoalEngineGemCost
     ) {
-      automateLog("Attempt to buy Charcoal Engine...");
+      automateLog("Attempt to buy Charcoal Engine (Charcoal Energy)...");
       getCharcoalEngine();
     }
   }
@@ -307,17 +335,57 @@ function automateCharcoalEnergy() {
 function automateMethaneEnergy() {
   if (
     methaneStation > 0 &&
-    methaneps > (methaneStationMethaneInput * methaneStation) &&
+    methaneps > methaneStationMethaneInput * 2 &&
     lunarite > methaneStationLunariteCost &&
     titanium > methaneStationTitaniumCost
   ) {
     while (
-      methaneps > (methaneStationMethaneInput * methaneStation) &&
+      methaneps > methaneStationMethaneInput * 2 &&
       lunarite > methaneStationLunariteCost &&
       titanium > methaneStationTitaniumCost
     ) {
-      automateLog("Attempt to buy Charcoal Engine...");
+      automateLog("Attempt to buy Methane Station (Methane Energy)...");
       getMethaneStation();
+    }
+  }
+}
+
+function automateUraniumEnergy() {
+  if (
+    nuclearStation > 0 &&
+    uraniumps > nuclearStationUraniumInput * 2 &&
+    lunarite > nuclearStationLunariteCost &&
+    titanium > nuclearStationTitaniumCost
+  ) {
+    while (
+      uraniumps > nuclearStationUraniumInput * 2 &&
+      lunarite > nuclearStationLunariteCost &&
+      titanium > nuclearStationTitaniumCost
+    ) {
+      automateLog("Attempt to buy Nuclear Station (Uranium Energy)...");
+      getNuclearStation();
+    }
+  }
+}
+
+function automateHydrogenHeliumEnergy() {
+  if (
+    fusionReactor > 0 &&
+    hydrogenps > fusionReactorHydrogenInput * 2 &&
+    heliumps > fusionReactorHeliumInput * 2 &&
+    lunarite > fusionReactorLunariteCost &&
+    titanium > fusionReactorTitaniumCost &&
+    silicon > fusionReactorSiliconCost
+  ) {
+    while (
+      hydrogenps > fusionReactorHydrogenInput * 2 &&
+      heliumps > fusionReactorHeliumInput * 2 &&
+      lunarite > fusionReactorLunariteCost &&
+      titanium > fusionReactorTitaniumCost &&
+      silicon > fusionReactorSiliconCost
+    ) {
+      automateLog("Attempt to buy Fusion Reactor (Hydrogen and Helium Energy)...");
+      getFusionReactor();
     }
   }
 }
@@ -325,13 +393,13 @@ function automateMethaneEnergy() {
 function automateMetal() {
   if (
     multiDrill > 0 &&
-    energyps > multiDrillEnergyInput &&
+    energyps > multiDrillEnergyInput * 2 &&
     titanium > multiDrillTitaniumCost &&
     gold > multiDrillGoldCost &&
     oil > multiDrillOilCost
   ) {
     while (
-      energyps > multiDrillEnergyInput &&
+      energyps > multiDrillEnergyInput * 2 &&
       titanium > multiDrillTitaniumCost &&
       gold > multiDrillGoldCost &&
       oil > multiDrillOilCost
@@ -341,13 +409,13 @@ function automateMetal() {
     }
   } else if (
     heavyDrill > 0 &&
-    energyps > heavyDrillEnergyInput &&
+    energyps > heavyDrillEnergyInput * 2 &&
     metal > heavyDrillMetalCost &&
     gem > heavyDrillGemCost &&
     oil > heavyDrillOilCost
   ) {
     while (
-      energyps > heavyDrillEnergyInput &&
+      energyps > heavyDrillEnergyInput * 2 &&
       metal > heavyDrillMetalCost &&
       gem > heavyDrillGemCost &&
       oil > heavyDrillOilCost
@@ -373,13 +441,13 @@ function automateMetal() {
 function automateWood() {
   if (
     forest > 0 &&
-    energyps > forestEnergyInput &&
+    energyps > forestEnergyInput * 2 &&
     metal > forestMetalCost &&
     gem > forestGemCost &&
     hydrogen > forestHydrogenCost
   ) {
     while (
-      energyps > forestEnergyInput &&
+      energyps > forestEnergyInput * 2 &&
       metal > forestMetalCost &&
       gem > forestGemCost &&
       hydrogen > forestHydrogenCost
@@ -389,13 +457,13 @@ function automateWood() {
     }
   } else if (
     laserCutter > 0 &&
-    energyps > laserCutterEnergyInput &&
+    energyps > laserCutterEnergyInput * 2 &&
     metal > laserCutterMetalCost &&
     gem > laserCutterGemCost &&
     oil > laserCutterOilCost
   ) {
     while (
-      energyps > laserCutterEnergyInput &&
+      energyps > laserCutterEnergyInput * 2 &&
       metal > laserCutterMetalCost &&
       gem > laserCutterGemCost &&
       oil > laserCutterOilCost
@@ -421,13 +489,13 @@ function automateWood() {
 function automateGem() {
   if (
     diamondChamber > 0 &&
-    energyps > diamondChamberEnergyInput &&
+    energyps > diamondChamberEnergyInput * 2 &&
     uranium > diamondChamberUraniumCost &&
     charcoal > diamondChamberCharcoalCost &&
     meteorite > diamondChamberMeteoriteCost
   ) {
     while (
-      energyps > diamondChamberEnergyInput &&
+      energyps > diamondChamberEnergyInput * 2 &&
       uranium > diamondChamberUraniumCost &&
       charcoal > diamondChamberCharcoalCost &&
       meteorite > diamondChamberMeteoriteCost
@@ -437,13 +505,13 @@ function automateGem() {
     }
   } else if (
     advancedDrill > 0 &&
-    energyps > advancedDrillEnergyInput &&
+    energyps > advancedDrillEnergyInput * 2 &&
     metal > advancedDrillMetalCost &&
     gem > advancedDrillGemCost &&
     oil > advancedDrillOilCost
   ) {
     while (
-      energyps > advancedDrillEnergyInput &&
+      energyps > advancedDrillEnergyInput * 2 &&
       metal > advancedDrillMetalCost &&
       gem > advancedDrillGemCost &&
       oil > advancedDrillOilCost
@@ -469,13 +537,13 @@ function automateGem() {
 function automateOil() {
   if (
     fossilator > 0 &&
-    energyps > fossilatorEnergyInput &&
+    energyps > fossilatorEnergyInput * 2 &&
     uranium > fossilatorUraniumCost &&
     charcoal > fossilatorCharcoalCost &&
     lava > fossilatorLavaCost
   ) {
     while (
-      energyps > fossilatorEnergyInput &&
+      energyps > fossilatorEnergyInput * 2 &&
       uranium > fossilatorUraniumCost &&
       charcoal > fossilatorCharcoalCost &&
       lava > fossilatorLavaCost
@@ -485,13 +553,13 @@ function automateOil() {
     }
   } else if (
     pumpjack > 0 &&
-    energyps > pumpjackEnergyInput &&
+    energyps > pumpjackEnergyInput * 2 &&
     metal > pumpjackMetalCost &&
     gem > pumpjackGemCost &&
     oil > pumpjackOilCost
   ) {
     while (
-      energyps > pumpjackEnergyInput &&
+      energyps > pumpjackEnergyInput * 2 &&
       metal > pumpjackMetalCost &&
       gem > pumpjackGemCost &&
       oil > pumpjackOilCost
@@ -517,13 +585,13 @@ function automateOil() {
 function automateSilicon() {
   if (
     tardis > 0 &&
-    energyps > tardisEnergyInput &&
+    energyps > tardisEnergyInput * 2 &&
     titanium > tardisTitaniumCost &&
     silicon > tardisSiliconCost &&
     meteorite > tardisMeteoriteCost
   ) {
     while (
-      energyps > tardisEnergyInput &&
+      energyps > tardisEnergyInput * 2 &&
       titanium > tardisTitaniumCost &&
       silicon > tardisSiliconCost &&
       meteorite > tardisMeteoriteCost
@@ -533,13 +601,13 @@ function automateSilicon() {
     }
   } else if (
     scorcher > 0 &&
-    energyps > scorcherEnergyInput &&
+    energyps > scorcherEnergyInput * 2 &&
     lunarite > scorcherLunariteCost &&
     gem > scorcherGemCost &&
     oil > scorcherOilCost
   ) {
     while (
-      energyps > scorcherEnergyInput &&
+      energyps > scorcherEnergyInput * 2 &&
       lunarite > scorcherLunariteCost &&
       gem > scorcherGemCost &&
       oil > scorcherOilCost
@@ -565,23 +633,15 @@ function automateSilicon() {
 function automateCharcoal() {
   if (
     microPollutor > 0 &&
-    woodps > (
-      (microPollutorWoodInput * microPollutor) +
-      (furnaceWoodInput * furnace) +
-      (woodburnerWoodInput * woodburner)
-    ) &&
-    energyps > microPollutorEnergyInput &&
+    woodps > microPollutorWoodInput * 2 &&
+    energyps > microPollutorEnergyInput * 2 &&
     metal > microPollutorMetalCost &&
     wood > microPollutorWoodCost &&
     lava > microPollutorLavaCost
   ) {
     while (
-      woodps > (
-        (microPollutorWoodInput * microPollutor) +
-        (furnaceWoodInput * furnace) +
-        (woodburnerWoodInput * woodburner)
-      ) &&
-      energyps > microPollutorEnergyInput &&
+      woodps > microPollutorWoodInput * 2 &&
+      energyps > microPollutorEnergyInput * 2 &&
       metal > microPollutorMetalCost &&
       wood > microPollutorWoodCost &&
       lava > microPollutorLavaCost
@@ -591,23 +651,15 @@ function automateCharcoal() {
     }
   } else if (
     furnace > 0 &&
-    woodps > (
-      (microPollutorWoodInput * microPollutor) +
-      (furnaceWoodInput * furnace) +
-      (woodburnerWoodInput * woodburner)
-    ) &&
-    energyps > furnaceEnergyInput &&
+    woodps > furnaceWoodInput * 2 &&
+    energyps > furnaceEnergyInput * 2 &&
     metal > furnaceMetalCost &&
     wood > furnaceWoodCost &&
     oil > furnaceOilCost
   ) {
     while (
-      woodps > (
-        (microPollutorWoodInput * microPollutor) +
-        (furnaceWoodInput * furnace) +
-        (woodburnerWoodInput * woodburner)
-      ) &&
-      energyps > furnaceEnergyInput &&
+      woodps > furnaceWoodInput * 2 &&
+      energyps > furnaceEnergyInput * 2 &&
       metal > furnaceMetalCost &&
       wood > furnaceWoodCost &&
       oil > furnaceOilCost
@@ -617,20 +669,12 @@ function automateCharcoal() {
     }
   } else if (
     woodburner > 0 &&
-    woodps > (
-      (microPollutorWoodInput * microPollutor) +
-      (furnaceWoodInput * furnace) +
-      (woodburnerWoodInput * woodburner)
-    ) &&
+    woodps > woodburnerWoodInput * 2 &&
     metal > woodburnerMetalCost &&
     wood > woodburnerWoodCost
   ) {
     while (
-      woodps > (
-        (microPollutorWoodInput * microPollutor) +
-        (furnaceWoodInput * furnace) +
-        (woodburnerWoodInput * woodburner)
-      ) &&
+      woodps > woodburnerWoodInput * 2 &&
       metal > woodburnerMetalCost &&
       wood > woodburnerWoodCost
     ) {
@@ -643,13 +687,13 @@ function automateCharcoal() {
 function automateLunarite() {
   if (
     cloner > 0 &&
-    energyps > clonerEnergyInput &&
+    energyps > clonerEnergyInput * 2 &&
     titanium > clonerTitaniumCost &&
     gold > clonerGoldCost &&
     methane > clonerMethaneCost
   ) {
     while (
-      energyps > clonerEnergyInput &&
+      energyps > clonerEnergyInput * 2 &&
       titanium > clonerTitaniumCost &&
       gold > clonerGoldCost &&
       methane > clonerMethaneCost
@@ -659,13 +703,13 @@ function automateLunarite() {
     }
   } else if (
     moonDrill > 0 &&
-    energyps > moonDrillEnergyInput &&
+    energyps > moonDrillEnergyInput * 2 &&
     metal > moonDrillMetalCost &&
     gem > moonDrillGemCost &&
     oil > moonDrillOilCost
   ) {
     while (
-      energyps > moonDrillEnergyInput &&
+      energyps > moonDrillEnergyInput * 2 &&
       metal > moonDrillMetalCost &&
       gem > moonDrillGemCost &&
       oil > moonDrillOilCost
@@ -681,7 +725,7 @@ function automateLunarite() {
       gem > moonWorkerGemCost
     ) {
       automateLog("Attempt to buy Tier 1 Lunarite Producer...");
-      getmoonWorker();
+      getMoonWorker();
     }
   }
 }
@@ -689,13 +733,13 @@ function automateLunarite() {
 function automateMethane() {
   if (
     interCow > 0 &&
-    energyps > interCowEnergyInput &&
+    energyps > interCowEnergyInput * 2 &&
     lunarite > interCowLunariteCost &&
     gold > interCowGoldCost &&
     hydrogen > interCowHydrogenCost
   ) {
     while (
-      energyps > interCowEnergyInput &&
+      energyps > interCowEnergyInput * 2 &&
       lunarite > interCowLunariteCost &&
       gold > interCowGoldCost &&
       hydrogen > interCowHydrogenCost
@@ -705,13 +749,13 @@ function automateMethane() {
     }
   } else if (
     suctionExcavator > 0 &&
-    energyps > suctionExcavatorEnergyInput &&
+    energyps > suctionExcavatorEnergyInput * 2 &&
     lunarite > suctionExcavatorLunariteCost &&
     gem > suctionExcavatorGemCost &&
     oil > suctionExcavatorOilCost
   ) {
     while (
-      energyps > suctionExcavatorEnergyInput &&
+      energyps > suctionExcavatorEnergyInput * 2 &&
       lunarite > suctionExcavatorLunariteCost &&
       gem > suctionExcavatorGemCost &&
       oil > suctionExcavatorOilCost
@@ -729,7 +773,7 @@ function automateMethane() {
       gem > vacuumGemCost
     ) {
       automateLog("Attempt to buy Tier 1 Methane Producer...");
-      getWoodcutter();
+      getVacuum();
     }
   }
 }
@@ -737,13 +781,13 @@ function automateMethane() {
 function automateTitanium() {
   if (
     club > 0 &&
-    energyps > clubEnergyInput &&
+    energyps > clubEnergyInput * 2 &&
     uranium > clubUraniumCost &&
     wood > clubWoodCost &&
     helium > clubHeliumCost
   ) {
     while (
-      energyps > clubEnergyInput &&
+      energyps > clubEnergyInput * 2 &&
       uranium > clubUraniumCost &&
       wood > clubWoodCost &&
       helium > clubHeliumCost
@@ -753,13 +797,13 @@ function automateTitanium() {
     }
   } else if (
     lunariteDrill > 0 &&
-    energyps > lunariteDrillEnergyInput &&
+    energyps > lunariteDrillEnergyInput * 2 &&
     lunarite > lunariteDrillLunariteCost &&
     gem > lunariteDrillGemCost &&
     oil > lunariteDrillOilCost
   ) {
     while (
-      energyps > lunariteDrillEnergyInput &&
+      energyps > lunariteDrillEnergyInput * 2 &&
       lunarite > lunariteDrillLunariteCost &&
       gem > lunariteDrillGemCost &&
       oil > lunariteDrillOilCost
@@ -783,13 +827,13 @@ function automateTitanium() {
 function automateGold() {
   if (
     philosopher > 0 &&
-    energyps > philosopherEnergyInput &&
+    energyps > philosopherEnergyInput * 2 &&
     metal > philosopherMetalCost &&
     silver > philosopherSilverlCost &&
     meteorite > philosopherMeteoriteCost
   ) {
     while (
-      energyps > philosopherEnergyInput &&
+      energyps > philosopherEnergyInput * 2 &&
       metal > philosopherMetalCost &&
       silver > philosopherSilverlCost &&
       meteorite > philosopherMeteoriteCost
@@ -799,13 +843,13 @@ function automateGold() {
     }
   } else if (
     destroyer > 0 &&
-    energyps > destroyerEnergyInput &&
+    energyps > destroyerEnergyInput * 2 &&
     lunarite > destroyerLunariteCost &&
     gem > destroyerGemCost &&
     oil > destroyerOilCost
   ) {
     while (
-      energyps > destroyerEnergyInput &&
+      energyps > destroyerEnergyInput * 2 &&
       lunarite > destroyerLunariteCost &&
       gem > destroyerGemCost &&
       oil > destroyerOilCost
@@ -831,13 +875,13 @@ function automateGold() {
 function automateSilver() {
   if (
     werewolf > 0 &&
-    energyps > werewolfEnergyInput &&
+    energyps > werewolfEnergyInput * 2 &&
     uranium > werewolfUraniumCost &&
     gem > werewolfGemCost &&
     methane > werewolfMethaneCost
   ) {
     while (
-      energyps > werewolfEnergyInput &&
+      energyps > werewolfEnergyInput * 2 &&
       uranium > werewolfUraniumCost &&
       gem > werewolfGemCost &&
       methane > werewolfMethaneCost
@@ -847,13 +891,13 @@ function automateSilver() {
     }
   } else if (
     spaceLaser > 0 &&
-    energyps > spaceLaserEnergyInput &&
+    energyps > spaceLaserEnergyInput * 2 &&
     lunarite > spaceLaserLunariteCost &&
     gem > spaceLaserGemCost &&
     oil > spaceLaserOilCost
   ) {
     while (
-      energyps > spaceLaserEnergyInput &&
+      energyps > spaceLaserEnergyInput * 2 &&
       lunarite > spaceLaserLunariteCost &&
       gem > spaceLaserGemCost &&
       oil > spaceLaserOilCost
@@ -875,3 +919,202 @@ function automateSilver() {
     }
   }
 }
+
+function automateHydrogen() {
+  if (
+    harvester > 0 &&
+    energyps > harvesterEnergyInput * 2 &&
+    lunarite > harvesterLunariteCost &&
+    wood > harvesterWoodCost &&
+    oil > harvesterOilCost
+  ) {
+    while (
+      energyps > harvesterEnergyInput * 2 &&
+      lunarite > harvesterLunariteCost &&
+      wood > harvesterWoodCost &&
+      oil > harvesterOilCost
+    ) {
+      automateLog("Attempt to buy Tier 5 Hydrogen Producer...");
+      getHarvester();
+    }
+  } else if (
+    magnet > 0 &&
+    energyps > magnetEnergyInput * 2 &&
+    lunarite > magnetLunariteCost &&
+    titanium > magnetTitaniumCost &&
+    silicon > magnetSiliconCost
+  ) {
+    while (
+      energyps > magnetEnergyInput * 2 &&
+      lunarite > magnetLunariteCost &&
+      titanium > magnetTitaniumCost &&
+      silicon > magnetSiliconCost
+    ) {
+      automateLog("Attempt to buy Tier 2 Hydrogen Producer...");
+      getMagnet();
+    }
+  } else if (
+    collector > 0 &&
+    lunarite > collectorLunariteCost &&
+    titanium > collectorTitaniumCost
+  ) {
+    while (
+      lunarite > collectorLunariteCost &&
+      titanium > collectorTitaniumCost
+    ) {
+      automateLog("Attempt to buy Tier 1 Hydrogen Producer...");
+      getCollector();
+    }
+  }
+}
+
+function automateHelium() {
+  if (
+    cage > 0 &&
+    energyps > cageEnergyInput * 2 &&
+    lunarite > cageLunariteCost &&
+    silicon > cageSiliconCost &&
+    meteorite > cageMeteoriteCost
+  ) {
+    while (
+      energyps > cageEnergyInput * 2 &&
+      lunarite > cageLunariteCost &&
+      silicon > cageSiliconCost &&
+      meteorite > cageMeteoriteCost
+    ) {
+      automateLog("Attempt to buy Tier 5 Helium Producer...");
+      getCage();
+    }
+  } else if (
+    tanker > 0 &&
+    energyps > tankerEnergyInput * 2 &&
+    lunarite > tankerLunariteCost &&
+    titanium > tankerTitaniumCost &&
+    silicon > tankerSiliconCost
+  ) {
+    while (
+      energyps > tankerEnergyInput * 2 &&
+      lunarite > tankerLunariteCost &&
+      titanium > tankerTitaniumCost &&
+      silicon > tankerSiliconCost
+    ) {
+      automateLog("Attempt to buy Tier 2 Helium Producer...");
+      getTanker();
+    }
+  } else if (
+    drone > 0 &&
+    lunarite > droneLunariteCost &&
+    silicon > droneSiliconCost
+  ) {
+    while (
+      lunarite > droneLunariteCost &&
+      silicon > droneSiliconCost
+    ) {
+      automateLog("Attempt to buy Tier 1 Helium Producer...");
+      getDrone();
+    }
+  }
+}
+
+function automateIce() {
+  if (
+    overexchange > 0 &&
+    energyps > overexchangeEnergyInput * 2 &&
+    metal > overexchangeMetalCost &&
+    silver > overexchangeSilverCost &&
+    helium > overexchangeHeliumCost
+  ) {
+    while (
+      energyps > overexchangeEnergyInput * 2 &&
+      metal > overexchangeMetalCost &&
+      silver > overexchangeSilverCost &&
+      helium > overexchangeHeliumCost
+    ) {
+      automateLog("Attempt to buy Tier 5 Ice Producer...");
+      getOverexchange();
+    }
+  } else if (
+    iceDrill > 0 &&
+    energyps > iceDrillEnergyInput * 2 &&
+    lunarite > iceDrillLunariteCost &&
+    titanium > iceDrillTitaniumCost &&
+    silicon > iceDrillSiliconCost
+  ) {
+    while (
+      energyps > tankerEnergyInput * 2 &&
+      lunarite > tankerLunariteCost &&
+      titanium > tankerTitaniumCost &&
+      silicon > tankerSiliconCost
+    ) {
+      automateLog("Attempt to buy Tier 2 Ice Producer...");
+      getTanker();
+    }
+  } else if (
+    icePick > 0 &&
+    lunarite > icePickLunariteCost &&
+    silicon > icePickSiliconCost
+  ) {
+    while (
+      lunarite > icePickLunariteCost &&
+      silicon > icePickSiliconCost
+    ) {
+      automateLog("Attempt to buy Tier 1 Ice Producer...");
+      getIcePick();
+    }
+  }
+}
+
+// function automateMeteorite() {}
+
+function automateUranium() {
+  if (
+    planetNuke > 0 &&
+    energyps > planetNukeEnergyInput * 2 &&
+    titanium > planetNukeTitaniumCost &&
+    silicon > planetNukeSiliconCost &&
+    ice > planetNukeIceCost
+  ) {
+    while (
+      energyps > planetNukeEnergyInput * 2 &&
+      titanium > planetNukeTitaniumCost &&
+      silicon > planetNukeSiliconCost &&
+      ice > planetNukeIceCost
+    ) {
+      automateLog("Attempt to buy Tier 5 Uranium Producer...");
+      getPlanetNuke();
+    }
+  } else if (
+    cubic > 0 &&
+    energyps > cubicEnergyInput * 2 &&
+    uranium > cubicUraniumCost &&
+    lunarite > cubicLunariteCost &&
+    oil > cubicOilCost
+  ) {
+    while (
+      energyps > cubicEnergyInput * 2 &&
+      uranium > cubicUraniumCost &&
+      lunarite > cubicLunariteCost &&
+      oil > cubicOilCost
+    ) {
+      automateLog("Attempt to buy Tier 2 Uranium Producer...");
+      getCubic();
+    }
+  } else if (
+    grinder > 0 &&
+    titanium > grinderTitaniumCost &&
+    lunarite > grinderLunariteCost &&
+    gold > grinderGoldCost
+  ) {
+    while (
+      titanium > grinderTitaniumCost &&
+      lunarite > grinderLunariteCost &&
+      gold > grinderGoldCost
+    ) {
+      automateLog("Attempt to buy Tier 1 Uranium Producer...");
+      getGrinder();
+    }
+  }
+}
+
+// function automateLava() {}
+
