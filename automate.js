@@ -19,34 +19,35 @@
  *  this is provided for educational purposes.
  * You may use strictly the storage automators or selectively comment 
  *  out automations you don't want.
- * This script
 */
 
-// Set the interval for the loop in milliseconds. Defaults to 
-// 10 seconds (10000 milliseconds)
-var automateInterval = 10000;
+/// Set the delay between each loop in milliseconds. Defaults to 
+/// 10 seconds (10000 milliseconds)
+var automateDelay = 10000;
 
-// Uncomment the desired functions in the desired order
+/// Uncomment the desired functions in the desired order
 function automateLoopFunction() {
-  // Automatically upgrades Storages of elements which needs Lunarite 
-  //  to be upgraded when they're full
+  /// Automatically upgrades Storages of elements which needs Lunarite 
+  ///  to be upgraded when they're full
   automateLunariteStorage();
-  // Automatically upgrades storages of elements which needs Metal to 
-  //  be upgraded when they're full
+  /// Automatically upgrades storages of elements which needs Metal to 
+  ///  be upgraded when they're full
   automateMetalStorage();
-  // Buy every possible energy producers
+  /// Buy every possible energy producers
   automateEnergy();
-  // Buy every possible earth resources producers, from tier 5 to tier 1
-  automateEarthResources();
-  // Buy every possible inner planetary resourcers producers, from 
-  //  tier 5 to tier 1
-  automateInnerPlanetaryResources();
-  // Buy every possible outer planetary resourcers producers, from 
-  //  tier 5 to tier 1
-  automateOuterPlanetaryResources();
-  // Buy every possible wonder resourcers producers, from tier 5 to tier 1
+  /// Buy every possible wonder resourcers producers, 
+  ///  from tier 5 to tier 1
   automateWonderResources();
-  // Buy every possible lab, from tier 5 to tier 1
+  /// Buy every possible outer planetary resourcers producers, 
+  ///  from tier 5 to tier 1
+  automateOuterPlanetaryResources();
+  /// Buy every possible inner planetary resourcers producers, 
+  ///  from tier 5 to tier 1
+  automateInnerPlanetaryResources();
+  /// Buy every possible earth resources producers, 
+  ///  from tier 5 to tier 1
+  automateEarthResources();
+  /// Buy every possible lab, from tier 5 to tier 1
   automateLabs();
 }
 
@@ -59,9 +60,21 @@ function automateLoopFunction() {
  * =====================================================================
 */
 
+
+function automateSleep(milliseconds) {
+  return new Promise(resolve => setTimeout(resolve, milliseconds));
+}
+
 var automateLoopVar;
 
-var automateName = "automate.js";
+var automateCompanyName = "Automate";
+
+var automateOldCompanyName;
+
+var automateName = "automateCompany";
+
+/// Interval for the automateSleep function in milliseconds
+var automateInterval = 100;
 
 function automateLog(automateMessage) {
   console.log("[" + automateName + "]: " + automateMessage);
@@ -69,18 +82,26 @@ function automateLog(automateMessage) {
 
 function automateStart() {
   automateLog("Starting " + automateName + "...");
+  automateOldCompanyName = companyName;
+  companyName = automateCompanyName;
   automateLoopVar = setInterval(
     automateLoopFunction,
-    automateInterval
+    automateDelay
   );
 }
 
 function automateStop () {
   automateLog("Stopping " + automateName + "...");
+  companyName = automateOldCompanyName;
   clearInterval(automateLoopVar);
 }
 
-// FIXME y u no work
+/// TODO Find a way to spread into multiple files without having to 
+///   install frameworks and whatnot in the target machine. Acceptable 
+///   means to use this script are the developer console of browsers or 
+///   tools readily available in a browser's menus without the need of 
+///   installing plugins or extensions.
+/// FIXME y u no work
 /*
 import {
   automateLunariteStorage,
@@ -117,84 +138,99 @@ import {
 
 function automateEnergy() {
   automateSolarEnergy();
-  automateCharcoalEnergy();
-  automateMethaneEnergy();
-  automateUraniumEnergy();
-  //automateLavaEnergy();
   automateHydrogenHeliumEnergy();
+  automateLavaEnergy();
+  automateUraniumEnergy();
+  automateMethaneEnergy();
+  automateCharcoalEnergy();
 }
 
 function automateEarthResources() {
+  automateSilicon();
+  automateGem();
   automateMetal();
   automateWood();
-  automateGem();
   automateOil();
-  automateSilicon();
   automateCharcoal();
 }
 
 function automateInnerPlanetaryResources() {
   automateLunarite();
-  automateMethane();
   automateTitanium();
   automateGold();
   automateSilver();
+  automateMethane();
 }
 
 function automateOuterPlanetaryResources() {
-  automateHydrogen();
   automateHelium();
+  automateHydrogen();
   automateIce();
-  //automateMeteorite();
 }
 
 function automateWonderResources() {
+  automateMeteorite();
+  automatePlasma();
+  automateLava();
   automateUranium();
-  //automateLava();
 }
 
-// FIXME gave up on packaging and brought it all back
+/// FIXME gave up on packaging and brought it all back
+
+/*
+ * =====================================================================
+ * STORAGE
+ * =====================================================================
+*/
 
 function automateLunariteStorage() {
   if (lunarite == lunariteStorage) {
     automateLog("Attempt to upgrade Lunarite Storage...");
     upgradeLunariteStorage();
   } else {
-    if (silicon == siliconStorage) {
-      automateLog("Attempt to upgrade Silicon Storage...");
-      upgradeSiliconStorage();
+    if (meteorite == meteoriteStorage) {
+      automateLog("Attempt to upgrade Meteorite Storage...");
+      upgradeMeteoriteStorage();
     }
-    if (methane == methaneStorage) {
-      automateLog("Attempt to upgrade Methane Storage...");
-      upgradeMethaneStorage();
+    if (lava == lavaStorage) {
+      automateLog("Attempt to upgrade Lava Storage...");
+      upgradeLavaStorage();
     }
-    if (titanium == titaniumStorage) {
-      automateLog("Attempt to upgrade Titanium Storage...");
-      upgradeTitaniumStorage();
-    }
-    if (gold == goldStorage) {
-      automateLog("Attempt to upgrade Gold Storage...");
-      upgradeGoldStorage();
-    }
-    if (silver == silverStorage) {
-      automateLog("Attempt to upgrade Silver Storage...");
-      upgradeSilverStorage();
-    }
-    if (hydrogen == hydrogenStorage) {
-      automateLog("Attempt to upgrade Hydrogen Storage...");
-      upgradeHydrogenStorage();
-    }
-    if (helium == heliumStorage) {
-      automateLog("Attempt to upgrade Helium Storage...");
-      upgradeHeliumStorage();
+    if (uranium == uraniumStorage) {
+      automateLog("Attempt to upgrade Uranium Storage...");
+      upgradeUraniumStorage();
     }
     if (ice == iceStorage) {
       automateLog("Attempt to upgrade Ice Storage...");
       upgradeIceStorage();
     }
-    if (uranium == uraniumStorage) {
-      automateLog("Attempt to upgrade Uranium Storage...");
-      upgradeUraniumStorage();
+    if (helium == heliumStorage) {
+      automateLog("Attempt to upgrade Helium Storage...");
+      upgradeHeliumStorage();
+    }
+    if (hydrogen == hydrogenStorage) {
+      automateLog("Attempt to upgrade Hydrogen Storage...");
+      upgradeHydrogenStorage();
+    }
+    if (titanium == titaniumStorage) {
+      automateLog("Attempt to upgrade Titanium Storage...");
+      upgradeTitaniumStorage();
+    }
+    if (silicon == siliconStorage) {
+      automateLog("Attempt to upgrade Silicon Storage...");
+      upgradeSiliconStorage();
+    }
+    if (silver == silverStorage) {
+      automateLog("Attempt to upgrade Silver Storage...");
+      upgradeSilverStorage();
+    }
+    if (gold == goldStorage) {
+      automateLog("Attempt to upgrade Gold Storage...");
+      upgradeGoldStorage();
+    }
+    if (methane == methaneStorage) {
+      automateLog("Attempt to upgrade Methane Storage...");
+      upgradeMethaneStorage();
     }
   }
 }
@@ -204,13 +240,13 @@ function automateMetalStorage() {
     automateLog("Attempt to upgrade Metal Storage...");
     upgradeMetalStorage();
   } else {
-    if (wood == woodStorage) {
-      automateLog("Attempt to upgrade Wood Storage...");
-      upgradeWoodStorage();
-    }
     if (gem == gemStorage) {
       automateLog("Attempt to upgrade Gem Storage...");
       upgradeGemStorage();
+    }
+    if (wood == woodStorage) {
+      automateLog("Attempt to upgrade Wood Storage...");
+      upgradeWoodStorage();
     }
     if (oil == oilStorage) {
       automateLog("Attempt to upgrade Oil Storage...");
@@ -223,7 +259,14 @@ function automateMetalStorage() {
   }
 }
 
-// Javascript doesn't have a while-else construct, so it has to be this way.
+/*
+ * =====================================================================
+ * RESEARCH
+ * =====================================================================
+*/
+
+/// Javascript doesn't have a while-else construct, so it has to be 
+///  this way.
 function automateLabs() {
   if (
     labT5 > 0 &&
@@ -238,6 +281,7 @@ function automateLabs() {
     ) {
       automateLog("Attempt to buy Laboratory Tier 5...");
       getLabT5();
+      automateSleep(automateInterval);
     }
   } else if (
     labT4 > 0 &&
@@ -252,6 +296,7 @@ function automateLabs() {
     ) {
       automateLog("Attempt to buy Laboratory Tier 4...");
       getLabT4();
+      automateSleep(automateInterval);
     }
   } else if (
     labT3 > 0 &&
@@ -266,6 +311,7 @@ function automateLabs() {
     ) {
       automateLog("Attempt to buy Laboratory Tier 3...");
       getLabT3();
+      automateSleep(automateInterval);
     }
   } else if (
     labT2 > 0 &&
@@ -280,6 +326,7 @@ function automateLabs() {
     ) {
       automateLog("Attempt to buy Laboratory Tier 2...");
       getLabT2();
+      automateSleep(automateInterval);
     }
   } else if (
     lab > 0 &&
@@ -294,9 +341,16 @@ function automateLabs() {
     ) {
       automateLog("Attempt to buy Laboratory Tier 1...");
       getLab();
+      automateSleep(automateInterval);
     }
   }
 }
+
+/*
+ * =====================================================================
+ * ENERGY
+ * =====================================================================
+*/
 
 function automateSolarEnergy() {
   if (
@@ -310,6 +364,7 @@ function automateSolarEnergy() {
     ) {
       automateLog("Attempt to buy Solar Panel...");
       getSolarPanel();
+      automateSleep(automateInterval);
     }
   }
 }
@@ -326,8 +381,11 @@ function automateCharcoalEnergy() {
       metal > charcoalEngineMetalCost &&
       gem > charcoalEngineGemCost
     ) {
-      automateLog("Attempt to buy Charcoal Engine (Charcoal Energy)...");
+      automateLog(
+        "Attempt to buy Charcoal Engine (Charcoal Energy)..."
+      );
       getCharcoalEngine();
+      automateSleep(automateInterval);
     }
   }
 }
@@ -344,8 +402,33 @@ function automateMethaneEnergy() {
       lunarite > methaneStationLunariteCost &&
       titanium > methaneStationTitaniumCost
     ) {
-      automateLog("Attempt to buy Methane Station (Methane Energy)...");
+      automateLog(
+        "Attempt to buy Methane Station (Methane Energy)..."
+      );
       getMethaneStation();
+      automateSleep(automateInterval);
+    }
+  }
+}
+
+function automateLavaEnergy() {
+  if (
+    magmatic > 0 &&
+    lavaps > magmaticLavaInput * 2 &&
+    lunarite > magmaticLunariteCost &&
+    gem > magmaticGemCost &&
+    silver > magmaticSilverCost
+  ) {
+    while (
+      lavaps > magmaticLavaInput * 2 &&
+      lunarite > magmaticLunariteCost &&
+      gem > magmaticGemCost &&
+      silver > magmaticSilverCost
+    ) {
+      automateLog("Attempt to buy Magmatic Dynamo (Lava Energy)...");
+      getMagmatic();
+      updateCost();
+      automateSleep(automateInterval);
     }
   }
 }
@@ -364,6 +447,7 @@ function automateUraniumEnergy() {
     ) {
       automateLog("Attempt to buy Nuclear Station (Uranium Energy)...");
       getNuclearStation();
+      automateSleep(automateInterval);
     }
   }
 }
@@ -384,11 +468,20 @@ function automateHydrogenHeliumEnergy() {
       titanium > fusionReactorTitaniumCost &&
       silicon > fusionReactorSiliconCost
     ) {
-      automateLog("Attempt to buy Fusion Reactor (Hydrogen and Helium Energy)...");
+      automateLog(
+        "Attempt to buy Fusion Reactor (Hydrogen and Helium Energy)..."
+      );
       getFusionReactor();
+      automateSleep(automateInterval);
     }
   }
 }
+
+/*
+ * =====================================================================
+ * EARTH RESOURCES
+ * =====================================================================
+*/
 
 function automateMetal() {
   if (
@@ -406,6 +499,44 @@ function automateMetal() {
     ) {
       automateLog("Attempt to buy Tier 5 Metal Producer...");
       getMultiDrill();
+      updateCost();
+      automateSleep(automateInterval);
+    }
+  } else if (
+    quantumDrill > 0 &&
+    energyps > quantumDrillEnergyInput * 2 &&
+    meteorite > quantumDrillMeteoriteCost &&
+    gold > quantumDrillGoldCost &&
+    lunarite > quantumDrillLunariteCost
+  ) {
+    while (
+      energyps > quantumDrillEnergyInput * 2 &&
+      meteorite > quantumDrillMeteoriteCost &&
+      gold > quantumDrillGoldCost &&
+      lunarite > quantumDrillLunariteCost
+    ) {
+      automateLog("Attempt to buy Tier 4 Metal Producer...");
+      getQuantumDrill();
+      updateCost();
+      automateSleep(automateInterval);
+    }
+  } else if (
+    gigaDrill > 0 &&
+    energyps > gigaDrillEnergyInput * 2 &&
+    silicon > gigaDrillSiliconCost &&
+    gem > gigaDrillGemCost &&
+    lunarite > gigaDrillLunariteCost
+  ) {
+    while (
+      energyps > gigaDrillEnergyInput * 2 &&
+      silicon > gigaDrillSiliconCost &&
+      gem > gigaDrillGemCost &&
+      lunarite > gigaDrillLunariteCost
+    ) {
+      automateLog("Attempt to buy Tier 3 Metal Producer...");
+      getGigaDrill();
+      updateCost();
+      automateSleep(automateInterval);
     }
   } else if (
     heavyDrill > 0 &&
@@ -422,6 +553,8 @@ function automateMetal() {
     ) {
       automateLog("Attempt to buy Tier 2 Metal Producer...");
       getHeavyDrill();
+      updateCost();
+      automateSleep(automateInterval);
     }
   } else if (
       miner > 0 &&
@@ -434,6 +567,8 @@ function automateMetal() {
     ) {
       automateLog("Attempt to buy Tier 1 Metal Producer...");
       getMiner();
+      updateCost();
+      automateSleep(automateInterval);
     }
   }
 }
@@ -454,6 +589,44 @@ function automateWood() {
     ) {
       automateLog("Attempt to buy Tier 5 Wood Producer...");
       getForest();
+      updateCost();
+      automateSleep(automateInterval);
+    }
+  } else if (
+    infuser > 0 &&
+    energyps > infuserEnergyInput * 2 &&
+    lunarite > infuserLunariteCost &&
+    oil > infuserOilCost &&
+    meteorite > infuserMeteoriteCost
+  ) {
+    while (
+      energyps > infuserEnergyInput * 2 &&
+      lunarite > infuserLunariteCost &&
+      oil > infuserOilCost &&
+      meteorite > infuserMeteoriteCost
+    ) {
+      automateLog("Attempt to buy Tier 4 Wood Producer...");
+      getInfuser();
+      updateCost();
+      automateSleep(automateInterval);
+    }
+  } else if (
+    deforester > 0 &&
+    energyps > deforesterEnergyInput * 2 &&
+    lunarite > deforesterLunariteCost &&
+    titanium > deforesterTitaniumCost &&
+    silicon > deforesterSiliconCost
+  ) {
+    while (
+      energyps > deforesterEnergyInput * 2 &&
+      lunarite > deforesterLunariteCost &&
+      titanium > deforesterTitaniumCost &&
+      silicon > deforesterSiliconCost
+    ) {
+      automateLog("Attempt to buy Tier 3 Wood Producer...");
+      getDeforester();
+      updateCost();
+      automateSleep(automateInterval);
     }
   } else if (
     laserCutter > 0 &&
@@ -470,6 +643,8 @@ function automateWood() {
     ) {
       automateLog("Attempt to buy Tier 2 Wood Producer...");
       getLaserCutter();
+      updateCost();
+      automateSleep(automateInterval);
     }
   } else if (
     woodcutter > 0 &&
@@ -482,6 +657,8 @@ function automateWood() {
     ) {
       automateLog("Attempt to buy Tier 1 Wood Producer...");
       getWoodcutter();
+      updateCost();
+      automateSleep(automateInterval);
     }
   }
 }
@@ -502,6 +679,44 @@ function automateGem() {
     ) {
       automateLog("Attempt to buy Tier 5 Gem Producer...");
       getDiamondChamber();
+      updateCost();
+      automateSleep(automateInterval);
+    }
+  } else if (
+    carbyneDrill > 0 &&
+    energyps > carbyneDrillEnergyInput * 2 &&
+    meteorite > carbyneDrillMeteoriteCost &&
+    gem > carbyneDrillGemCost &&
+    lunarite > carbyneDrillLunariteCost
+  ) {
+    while (
+      energyps > carbyneDrillEnergyInput * 2 &&
+      meteorite > carbyneDrillMeteoriteCost &&
+      gem > carbyneDrillGemCost &&
+      lunarite > carbyneDrillLunariteCost
+    ) {
+      automateLog("Attempt to buy Tier 4 Gem Producer...");
+      getCarbyneDrill();
+      updateCost();
+      automateSleep(automateInterval);
+    }
+  } else if (
+    diamondDrill > 0 &&
+    energyps > diamondDrillEnergyInput * 2 &&
+    silicon > diamondDrillSiliconCost &&
+    gem > diamondDrillGemCost &&
+    lunarite > diamondDrillLunariteCost
+  ) {
+    while (
+      energyps > diamondDrillEnergyInput * 2 &&
+      silicon > diamondDrillSiliconCost &&
+      gem > diamondDrillGemCost &&
+      lunarite > diamondDrillLunariteCost
+    ) {
+      automateLog("Attempt to buy Tier 3 Gem Producer...");
+      getDiamondDrill();
+      updateCost();
+      automateSleep(automateInterval);
     }
   } else if (
     advancedDrill > 0 &&
@@ -518,6 +733,8 @@ function automateGem() {
     ) {
       automateLog("Attempt to buy Tier 2 Gem Producer...");
       getAdvancedDrill();
+      updateCost();
+      automateSleep(automateInterval);
     }
   } else if (
     gemMiner > 0 &&
@@ -530,6 +747,8 @@ function automateGem() {
     ) {
       automateLog("Attempt to buy Tier 1 Gem Producer...");
       getGemMiner();
+      updateCost();
+      automateSleep(automateInterval);
     }
   }
 }
@@ -550,6 +769,44 @@ function automateOil() {
     ) {
       automateLog("Attempt to buy Tier 5 Oil Producer...");
       getFossilator();
+      updateCost();
+      automateSleep(automateInterval);
+    }
+  } else if (
+    oilRig > 0 &&
+    energyps > oilRigEnergyInput * 2 &&
+    meteorite > oilRigMeteoriteCost &&
+    titanium > oilRigTitaniumCost &&
+    lunarite > oilRigLunariteCost
+  ) {
+    while (
+      energyps > oilRigEnergyInput * 2 &&
+      meteorite > oilRigMeteoriteCost &&
+      titanium > oilRigTitaniumCost &&
+      lunarite > oilRigLunariteCost
+    ) {
+      automateLog("Attempt to buy Tier 4 Oil Producer...");
+      getOilRig();
+      updateCost();
+      automateSleep(automateInterval);
+    }
+  } else if (
+    oilField > 0 &&
+    energyps > oilFieldEnergyInput * 2 &&
+    silicon > oilFieldSiliconCost &&
+    titanium > oilFieldTitaniumCost &&
+    lunarite > oilFieldLunariteCost
+  ) {
+    while (
+      energyps > oilFieldEnergyInput * 2 &&
+      silicon > oilFieldSiliconCost &&
+      titanium > oilFieldTitaniumCost &&
+      lunarite > oilFieldLunariteCost
+    ) {
+      automateLog("Attempt to buy Tier 3 Oil Producer...");
+      getOilField();
+      updateCost();
+      automateSleep(automateInterval);
     }
   } else if (
     pumpjack > 0 &&
@@ -563,9 +820,11 @@ function automateOil() {
       metal > pumpjackMetalCost &&
       gem > pumpjackGemCost &&
       oil > pumpjackOilCost
-  ) {
+    ) {
       automateLog("Attempt to buy Tier 2 Oil Producer...");
       getPumpjack();
+      updateCost();
+      automateSleep(automateInterval);
     }
   } else if (
     pump > 0 &&
@@ -578,6 +837,8 @@ function automateOil() {
     ) {
       automateLog("Attempt to buy Tier 1 Oil Producer...");
       getPump();
+      updateCost();
+      automateSleep(automateInterval);
     }
   }
 }
@@ -598,6 +859,44 @@ function automateSilicon() {
     ) {
       automateLog("Attempt to buy Tier 5 Silicon Producer...");
       getTardis();
+      updateCost();
+      automateSleep(automateInterval);
+    }
+  } else if (
+    desert > 0 &&
+    energyps > desertEnergyInput * 2 &&
+    lunarite > desertLunariteCost &&
+    silicon > desertSiliconCost &&
+    meteorite > desertMeteoriteCost
+  ) {
+    while (
+      energyps > desertEnergyInput * 2 &&
+      lunarite > desertLunariteCost &&
+      silicon > desertSiliconCost &&
+      meteorite > desertMeteoriteCost
+    ) {
+      automateLog("Attempt to buy Tier 4 Silicon Producer...");
+      getDesert();
+      updateCost();
+      automateSleep(automateInterval);
+    }
+  } else if (
+    annihilator > 0 &&
+    energyps > annihilatorEnergyInput * 2 &&
+    lunarite > annihilatorLunariteCost &&
+    gem > annihilatorGemCost &&
+    silver > annihilatorSilverCost
+  ) {
+    while (
+      energyps > annihilatorEnergyInput * 2 &&
+      lunarite > annihilatorLunariteCost &&
+      gem > annihilatorGemCost &&
+      silver > annihilatorSilverCost
+    ) {
+      automateLog("Attempt to buy Tier 3 Silicon Producer...");
+      getAnnihilator();
+      updateCost();
+      automateSleep(automateInterval);
     }
   } else if (
     scorcher > 0 &&
@@ -614,6 +913,8 @@ function automateSilicon() {
     ) {
       automateLog("Attempt to buy Tier 2 Silicon Producer...");
       getScorcher();
+      updateCost();
+      automateSleep(automateInterval);
     }
   } else if (
     blowtorch > 0 &&
@@ -626,49 +927,95 @@ function automateSilicon() {
     ) {
       automateLog("Attempt to buy Tier 1 Silicon Producer...");
       getBlowtorch();
+      updateCost();
+      automateSleep(automateInterval);
     }
   }
 }
 
 function automateCharcoal() {
   if (
-    microPollutor > 0 &&
-    woodps > microPollutorWoodInput * 2 &&
+    microPollutor > 1 &&
     energyps > microPollutorEnergyInput * 2 &&
+    woodps > microPollutorWoodInput * 2 &&
     metal > microPollutorMetalCost &&
     wood > microPollutorWoodCost &&
     lava > microPollutorLavaCost
   ) {
     while (
-      woodps > microPollutorWoodInput * 2 &&
       energyps > microPollutorEnergyInput * 2 &&
+      woodps > microPollutorWoodInput * 2 &&
       metal > microPollutorMetalCost &&
       wood > microPollutorWoodCost &&
       lava > microPollutorLavaCost
     ) {
       automateLog("Attempt to buy Tier 5 Charcoal Producer...");
       getMicroPollutor();
+      updateCost();
+      automateSleep(automateInterval);
     }
   } else if (
-    furnace > 0 &&
-    woodps > furnaceWoodInput * 2 &&
+    fryer > 1 &&
+    energyps > fryerEnergyInput * 2 &&
+    woodps > fryerWoodInput * 2 &&
+    meteorite > fryerMeteoriteCost &&
+    lava > fryerLavaCost &&
+    lunarite > fryerLunariteCost
+  ) {
+    while (
+      energyps > fryerEnergyInput * 2 &&
+      woodps > fryerWoodInput * 2 &&
+      meteorite > fryerMeteoriteCost &&
+      lava > fryerLavaCost &&
+      lunarite > fryerLunariteCost
+    ) {
+      automateLog("Attempt to buy Tier 4 Charcoal Producer...");
+      getFryer();
+      updateCost();
+      automateSleep(automateInterval);
+    }
+  } else if (
+    kiln > 1 &&
+    energyps > kilnEnergyInput * 2 &&
+    woodps > kilnWoodInput * 2 &&
+    silicon > kilnSiliconCost &&
+    gem > kilnGemCost &&
+    lunarite > kilnLunariteCost
+  ) {
+    while (
+      energyps > kilnEnergyInput * 2 &&
+      woodps > kilnWoodInput * 2 &&
+      silicon > kilnSiliconCost &&
+      gem > kilnGemCost &&
+      lunarite > kilnLunariteCost
+    ) {
+      automateLog("Attempt to buy Tier 3 Charcoal Producer...");
+      getKiln();
+      updateCost();
+      automateSleep(automateInterval);
+    }
+  } else if (
+    furnace > 1 &&
     energyps > furnaceEnergyInput * 2 &&
+    woodps > furnaceWoodInput * 2 &&
     metal > furnaceMetalCost &&
     wood > furnaceWoodCost &&
     oil > furnaceOilCost
   ) {
     while (
-      woodps > furnaceWoodInput * 2 &&
       energyps > furnaceEnergyInput * 2 &&
+      woodps > furnaceWoodInput * 2 &&
       metal > furnaceMetalCost &&
       wood > furnaceWoodCost &&
       oil > furnaceOilCost
     ) {
       automateLog("Attempt to buy Tier 2 Charcoal Producer...");
       getFurnace();
+      updateCost();
+      automateSleep(automateInterval);
     }
   } else if (
-    woodburner > 0 &&
+    woodburner > 1 &&
     woodps > woodburnerWoodInput * 2 &&
     metal > woodburnerMetalCost &&
     wood > woodburnerWoodCost
@@ -680,9 +1027,17 @@ function automateCharcoal() {
     ) {
       automateLog("Attempt to buy Tier 1 Charcoal Producer...");
       getWoodburner();
+      updateCost();
+      automateSleep(automateInterval);
     }
   }  
 }
+
+/*
+ * =====================================================================
+ * INNER PLANETARY RESOURCES
+ * =====================================================================
+*/
 
 function automateLunarite() {
   if (
@@ -700,6 +1055,44 @@ function automateLunarite() {
     ) {
       automateLog("Attempt to buy Tier 5 Lunarite Producer...");
       getCloner();
+      updateCost();
+      automateSleep(automateInterval);
+    }
+  } else if (
+    planetExcavator > 0 &&
+    energyps > planetExcavatorEnergyInput * 2 &&
+    meteorite > planetExcavatorMeteoriteCost &&
+    ice > planetExcavatorIceCost &&
+    titanium > planetExcavatorTitaniumCost
+  ) {
+    while (
+      energyps > planetExcavatorEnergyInput * 2 &&
+      meteorite > planetExcavatorMeteoriteCost &&
+      ice > planetExcavatorIceCost &&
+      titanium > planetExcavatorTitaniumCost
+    ) {
+      automateLog("Attempt to buy Tier 4 Lunarite Producer...");
+      getPlanetExcavator();
+      updateCost();
+      automateSleep(automateInterval);
+    }
+  } else if (
+    moonQuarry > 0 &&
+    energyps > moonQuarryEnergyInput * 2 &&
+    silicon > moonQuarrySiliconCost &&
+    gem > moonQuarryGemCost &&
+    lunarite > moonQuarryLunariteCost
+  ) {
+    while (
+      energyps > moonQuarryEnergyInput * 2 &&
+      silicon > moonQuarrySiliconCost &&
+      gem > moonQuarryGemCost &&
+      lunarite > moonQuarryLunariteCost
+    ) {
+      automateLog("Attempt to buy Tier 3 Lunarite Producer...");
+      getMoonQuarry();
+      updateCost();
+      automateSleep(automateInterval);
     }
   } else if (
     moonDrill > 0 &&
@@ -716,6 +1109,8 @@ function automateLunarite() {
     ) {
       automateLog("Attempt to buy Tier 2 Lunarite Producer...");
       getMoonDrill();
+      updateCost();
+      automateSleep(automateInterval);
     }
   } else if (
       moonWorker > 0 &&
@@ -726,6 +1121,8 @@ function automateLunarite() {
     ) {
       automateLog("Attempt to buy Tier 1 Lunarite Producer...");
       getMoonWorker();
+      updateCost();
+      automateSleep(automateInterval);
     }
   }
 }
@@ -746,6 +1143,44 @@ function automateMethane() {
     ) {
       automateLog("Attempt to buy Tier 5 Methane Producer...");
       getInterCow();
+      updateCost();
+      automateSleep(automateInterval);
+    }
+  } else if (
+    vent > 0 &&
+    energyps > ventEnergyInput * 2 &&
+    lunarite > ventLunariteCost &&
+    meteorite > ventMeteoriteCost &&
+    helium > ventHeliumCost
+  ) {
+    while (
+      energyps > ventEnergyInput * 2 &&
+      lunarite > ventLunariteCost &&
+      meteorite > ventMeteoriteCost &&
+      helium > ventHeliumCost
+    ) {
+      automateLog("Attempt to buy Tier 4 Methane Producer...");
+      getVent();
+      updateCost();
+      automateSleep(automateInterval);
+    }
+  } else if (
+    spaceCow > 0 &&
+    energyps > spaceCowEnergyInput * 2 &&
+    lunarite > spaceCowLunariteCost &&
+    silicon > spaceCowSiliconCost &&
+    titanium > spaceCowTitaniumCost
+  ) {
+    while (
+      energyps > spaceCowEnergyInput * 2 &&
+      lunarite > spaceCowLunariteCost &&
+      silicon > spaceCowSiliconCost &&
+      titanium > spaceCowTitaniumCost
+    ) {
+      automateLog("Attempt to buy Tier 3 Methane Producer...");
+      getSpaceCow();
+      updateCost();
+      automateSleep(automateInterval);
     }
   } else if (
     suctionExcavator > 0 &&
@@ -762,6 +1197,8 @@ function automateMethane() {
     ) {
       automateLog("Attempt to buy Tier 2 Methane Producer...");
       getSuctionExcavator();
+      updateCost();
+      automateSleep(automateInterval);
     }
   } else if (
     vacuum > 0 &&
@@ -774,6 +1211,8 @@ function automateMethane() {
     ) {
       automateLog("Attempt to buy Tier 1 Methane Producer...");
       getVacuum();
+      updateCost();
+      automateSleep(automateInterval);
     }
   }
 }
@@ -794,6 +1233,44 @@ function automateTitanium() {
     ) {
       automateLog("Attempt to buy Tier 5 Titanium Producer...");
       getClub();
+      updateCost();
+      automateSleep(automateInterval);
+    }
+  } else if (
+    titanDrill > 0 &&
+    energyps > titanDrillEnergyInput * 2 &&
+    lunarite > titanDrillLunariteCost &&
+    gold > titanDrillGoldCost &&
+    meteorite > titanDrillMeteoriteCost
+  ) {
+    while (
+      energyps > titanDrillEnergyInput * 2 &&
+      lunarite > titanDrillLunariteCost &&
+      gold > titanDrillGoldCost &&
+      meteorite > titanDrillMeteoriteCost
+    ) {
+      automateLog("Attempt to buy Tier 4 Titanium Producer...");
+      getTitanDrill();
+      updateCost();
+      automateSleep(automateInterval);
+    }
+  } else if (
+    pentaDrill > 0 &&
+    energyps > pentaDrillEnergyInput * 2 &&
+    lunarite > pentaDrillLunariteCost &&
+    gem > pentaDrillGemCost &&
+    silicon > pentaDrillSiliconCost
+  ) {
+    while (
+      energyps > pentaDrillEnergyInput * 2 &&
+      lunarite > pentaDrillLunariteCost &&
+      gem > pentaDrillGemCost &&
+      silicon > pentaDrillSiliconCost
+    ) {
+      automateLog("Attempt to buy Tier 3 Titanium Producer...");
+      getPentaDrill();
+      updateCost();
+      automateSleep(automateInterval);
     }
   } else if (
     lunariteDrill > 0 &&
@@ -810,6 +1287,8 @@ function automateTitanium() {
     ) {
       automateLog("Attempt to buy Tier 2 Titanium Producer...");
       getLunariteDrill();
+      updateCost();
+      automateSleep(automateInterval);
     }
   } else if (
     explorer > 0 &&
@@ -820,6 +1299,8 @@ function automateTitanium() {
     ) {
       automateLog("Attempt to buy Tier 1 Titanium Producer...");
       getExplorer();
+      updateCost();
+      automateSleep(automateInterval);
     }
   }
 }
@@ -840,6 +1321,44 @@ function automateGold() {
     ) {
       automateLog("Attempt to buy Tier 5 Gold Producer...");
       getPhilosopher();
+      updateCost();
+      automateSleep(automateInterval);
+    }
+  } else if (
+    actuator > 0 &&
+    energyps > actuatorEnergyInput * 2 &&
+    lunarite > actuatorLunariteCost &&
+    helium > actuatorHeliumCost &&
+    meteorite > actuatorMeteoriteCost
+  ) {
+    while (
+      energyps > actuatorEnergyInput * 2 &&
+      lunarite > actuatorLunariteCost &&
+      helium > actuatorHeliumCost &&
+      meteorite > actuatorMeteoriteCost
+    ) {
+      automateLog("Attempt to buy Tier 4 Gold Producer...");
+      getActuator();
+      updateCost();
+      automateSleep(automateInterval);
+    }
+  } else if (
+    deathStar > 0 &&
+    energyps > deathStarEnergyInput * 2 &&
+    lunarite > deathStarLunariteCost &&
+    silver > deathStarSilverCost &&
+    silicon > deathStarSiliconCost
+  ) {
+    while (
+      energyps > deathStarEnergyInput * 2 &&
+      lunarite > deathStarLunariteCost &&
+      silver > deathStarSilverCost &&
+      silicon > deathStarSiliconCost
+    ) {
+      automateLog("Attempt to buy Tier 3 Gold Producer...");
+      getDeathStar();
+      updateCost();
+      automateSleep(automateInterval);
     }
   } else if (
     destroyer > 0 &&
@@ -856,6 +1375,8 @@ function automateGold() {
     ) {
       automateLog("Attempt to buy Tier 2 Gold Producer...");
       getDestroyer();
+      updateCost();
+      automateSleep(automateInterval);
     }
   } else if (
     droid > 0 &&
@@ -868,6 +1389,8 @@ function automateGold() {
     ) {
       automateLog("Attempt to buy Tier 1 Gold Producer...");
       getDroid();
+      updateCost();
+      automateSleep(automateInterval);
     }
   }
 }
@@ -888,6 +1411,44 @@ function automateSilver() {
     ) {
       automateLog("Attempt to buy Tier 5 Silver Producer...");
       getWerewolf();
+      updateCost();
+      automateSleep(automateInterval);
+    }
+  } else if (
+    cannon > 0 &&
+    energyps > cannonEnergyInput * 2 &&
+    lunarite > cannonLunariteCost &&
+    meteorite > cannonMeteoriteCost &&
+    oil > cannonOilCost
+  ) {
+    while (
+      energyps > cannonEnergyInput * 2 &&
+      lunarite > cannonLunariteCost &&
+      meteorite > cannonMeteoriteCost &&
+      oil > cannonOilCost
+    ) {
+      automateLog("Attempt to buy Tier 4 Silver Producer...");
+      getCannon();
+      updateCost();
+      automateSleep(automateInterval);
+    }
+  } else if (
+    bertha > 0 &&
+    energyps > berthaEnergyInput * 2 &&
+    lunarite > berthaLunariteCost &&
+    titanium > berthaTitaniumCost &&
+    silicon > berthaSiliconCost
+  ) {
+    while (
+      energyps > berthaEnergyInput * 2 &&
+      lunarite > berthaLunariteCost &&
+      titanium > berthaTitaniumCost &&
+      silicon > berthaSiliconCost
+    ) {
+      automateLog("Attempt to buy Tier 3 Silver Producer...");
+      getBertha();
+      updateCost();
+      automateSleep(automateInterval);
     }
   } else if (
     spaceLaser > 0 &&
@@ -904,6 +1465,8 @@ function automateSilver() {
     ) {
       automateLog("Attempt to buy Tier 2 Silver Producer...");
       getSpaceLaser();
+      updateCost();
+      automateSleep(automateInterval);
     }
   } else if (
     scout > 0 &&
@@ -916,9 +1479,17 @@ function automateSilver() {
     ) {
       automateLog("Attempt to buy Tier 1 Silver Producer...");
       getScout();
+      updateCost();
+      automateSleep(automateInterval);
     }
   }
 }
+
+/*
+ * =====================================================================
+ * OUTER PLANETARY RESOURCES
+ * =====================================================================
+*/
 
 function automateHydrogen() {
   if (
@@ -936,22 +1507,62 @@ function automateHydrogen() {
     ) {
       automateLog("Attempt to buy Tier 5 Hydrogen Producer...");
       getHarvester();
+      updateCost();
+      automateSleep(automateInterval);
+    }
+  } else if (
+    hindenburg > 0 &&
+    energyps > hindenburgEnergyInput * 2 &&
+    lunarite > hindenburgLunariteCost &&
+    meteorite > hindenburgMeteoriteCost &&
+    methane > hindenburgMethaneCost
+  ) {
+    while (
+      energyps > hindenburgEnergyInput * 2 &&
+      lunarite > hindenburgLunariteCost &&
+      meteorite > hindenburgMeteoriteCost &&
+      methane > hindenburgMethaneCost
+    ) {
+      automateLog("Attempt to buy Tier 4 Hydrogen Producer...");
+      getHindenburg();
+      updateCost();
+      automateSleep(automateInterval);
+    }
+  } else if (
+    eCell > 0 &&
+    energyps > eCellEnergyInput * 2 &&
+    silicon > eCellSiliconCost &&
+    silver > eCellSilverCost &&
+    gold > eCellGoldCost
+  ) {
+    while (
+      energyps > eCellEnergyInput * 2 &&
+      silicon > eCellSiliconCost &&
+      silver > eCellSilverCost &&
+      gold > eCellGoldCost
+    ) {
+      automateLog("Attempt to buy Tier 3 Hydrogen Producer...");
+      getECell();
+      updateCost();
+      automateSleep(automateInterval);
     }
   } else if (
     magnet > 0 &&
     energyps > magnetEnergyInput * 2 &&
     lunarite > magnetLunariteCost &&
     titanium > magnetTitaniumCost &&
-    silicon > magnetSiliconCost
+    gold > magnetGoldCost
   ) {
     while (
       energyps > magnetEnergyInput * 2 &&
       lunarite > magnetLunariteCost &&
       titanium > magnetTitaniumCost &&
-      silicon > magnetSiliconCost
+      gold > magnetGoldCost
     ) {
       automateLog("Attempt to buy Tier 2 Hydrogen Producer...");
       getMagnet();
+      updateCost();
+      automateSleep(automateInterval);
     }
   } else if (
     collector > 0 &&
@@ -964,6 +1575,8 @@ function automateHydrogen() {
     ) {
       automateLog("Attempt to buy Tier 1 Hydrogen Producer...");
       getCollector();
+      updateCost();
+      automateSleep(automateInterval);
     }
   }
 }
@@ -971,7 +1584,7 @@ function automateHydrogen() {
 function automateHelium() {
   if (
     cage > 0 &&
-    energyps > cageEnergyInput * 2 &&
+    energyps > cageEnergyInput *2 &&
     lunarite > cageLunariteCost &&
     silicon > cageSiliconCost &&
     meteorite > cageMeteoriteCost
@@ -984,6 +1597,44 @@ function automateHelium() {
     ) {
       automateLog("Attempt to buy Tier 5 Helium Producer...");
       getCage();
+      updateCost();
+      automateSleep(automateInterval);
+    }
+  } else if (
+    skimmer > 0 &&
+    energyps > skimmerEnergyInput * 2 &&
+    lunarite > skimmerLunariteCost &&
+    titanium > skimmerTitaniumCost &&
+    meteorite > skimmerMeteoriteCost
+  ) {
+    while (
+      energyps > skimmerEnergyInput * 2 &&
+      lunarite > skimmerLunariteCost &&
+      titanium > skimmerTitaniumCost &&
+      meteorite > skimmerMeteoriteCost
+    ) {
+      automateLog("Attempt to buy Tier 4 Helium Producer...");
+      getSkimmer();
+      updateCost();
+      automateSleep(automateInterval);
+    }
+  } else if (
+    compressor > 0 &&
+    energyps > compressorEnergyInput * 2 &&
+    lunarite > compressorLunariteCost &&
+    titanium > compressorTitaniumCost &&
+    silicon > compressorSiliconCost
+  ) {
+    while (
+      energyps > compressorEnergyInput * 2 &&
+      lunarite > compressorLunariteCost &&
+      titanium > compressorTitaniumCost &&
+      silicon > compressorSiliconCost
+    ) {
+      automateLog("Attempt to buy Tier 3 Helium Producer...");
+      getCompressor();
+      updateCost();
+      automateSleep(automateInterval);
     }
   } else if (
     tanker > 0 &&
@@ -1000,6 +1651,8 @@ function automateHelium() {
     ) {
       automateLog("Attempt to buy Tier 2 Helium Producer...");
       getTanker();
+      updateCost();
+      automateSleep(automateInterval);
     }
   } else if (
     drone > 0 &&
@@ -1012,6 +1665,8 @@ function automateHelium() {
     ) {
       automateLog("Attempt to buy Tier 1 Helium Producer...");
       getDrone();
+      updateCost();
+      automateSleep(automateInterval);
     }
   }
 }
@@ -1032,6 +1687,44 @@ function automateIce() {
     ) {
       automateLog("Attempt to buy Tier 5 Ice Producer...");
       getOverexchange();
+      updateCost();
+      automateSleep(automateInterval);
+    }
+  } else if (
+    mrFreeze > 0 &&
+    energyps > mrFreezeEnergyInput * 2 &&
+    meteorite > mrFreezeMeteoriteCost &&
+    helium > mrFreezeHeliumCost &&
+    wood > mrFreezWoodCost
+  ) {
+    while (
+      energyps > mrFreezeEnergyInput * 2 &&
+      meteorite > mrFreezeMeteoriteCost &&
+      helium > mrFreezeHeliumCost &&
+      wood > mrFreezWoodCost
+    ) {
+      automateLog("Attempt to buy Tier 4 Ice Producer...");
+      getMrFreeze();
+      updateCost();
+      automateSleep(automateInterval);
+    }
+  } else if (
+    freezer > 0 &&
+    energyps > freezerEnergyInput * 2 &&
+    lunarite > freezerLunariteCost &&
+    titanium > freezerTitaniumCost &&
+    silicon > freezerSiliconCost
+  ) {
+    while (
+      energyps > freezerEnergyInput * 2 &&
+      lunarite > freezerLunariteCost &&
+      titanium > freezerTitaniumCost &&
+      silicon > freezerSiliconCost
+    ) {
+      automateLog("Attempt to buy Tier 3 Ice Producer...");
+      getFreezer();
+      updateCost();
+      automateSleep(automateInterval);
     }
   } else if (
     iceDrill > 0 &&
@@ -1041,30 +1734,38 @@ function automateIce() {
     silicon > iceDrillSiliconCost
   ) {
     while (
-      energyps > tankerEnergyInput * 2 &&
-      lunarite > tankerLunariteCost &&
-      titanium > tankerTitaniumCost &&
-      silicon > tankerSiliconCost
+      energyps > iceDrillEnergyInput * 2 &&
+      lunarite > iceDrillLunariteCost &&
+      titanium > iceDrillTitaniumCost &&
+      silicon > iceDrillSiliconCost
     ) {
       automateLog("Attempt to buy Tier 2 Ice Producer...");
-      getTanker();
+      getIceDrill();
+      updateCost();
+      automateSleep(automateInterval);
     }
   } else if (
     icePick > 0 &&
     lunarite > icePickLunariteCost &&
-    silicon > icePickSiliconCost
+    gem > icePickGemCost
   ) {
     while (
       lunarite > icePickLunariteCost &&
-      silicon > icePickSiliconCost
+      gem > icePickGemCost
     ) {
       automateLog("Attempt to buy Tier 1 Ice Producer...");
       getIcePick();
+      updateCost();
+      automateSleep(automateInterval);
     }
   }
 }
 
-// function automateMeteorite() {}
+/*
+ * =====================================================================
+ * WONDER RESOURCES
+ * =====================================================================
+*/
 
 function automateUranium() {
   if (
@@ -1082,6 +1783,8 @@ function automateUranium() {
     ) {
       automateLog("Attempt to buy Tier 5 Uranium Producer...");
       getPlanetNuke();
+      updateCost();
+      automateSleep(automateInterval);
     }
   } else if (
     cubic > 0 &&
@@ -1098,6 +1801,8 @@ function automateUranium() {
     ) {
       automateLog("Attempt to buy Tier 2 Uranium Producer...");
       getCubic();
+      updateCost();
+      automateSleep(automateInterval);
     }
   } else if (
     grinder > 0 &&
@@ -1112,9 +1817,242 @@ function automateUranium() {
     ) {
       automateLog("Attempt to buy Tier 1 Uranium Producer...");
       getGrinder();
+      updateCost();
+      automateSleep(automateInterval);
     }
   }
 }
 
-// function automateLava() {}
+function automateLava() {
+  if (
+    condensator > 0 &&
+    energyps > condensatorEnergyInput * 2 &&
+    lunarite > condensatorLunariteCost &&
+    gem > condensatorGemCost &&
+    ice > condensatorIceCost
+  ) {
+    while (
+      energyps > condensatorEnergyInput * 2 &&
+      lunarite > condensatorLunariteCost &&
+      gem > condensatorGemCost &&
+      ice > condensatorIceCost
+    ) {
+      automateLog("Attempt to buy Tier 5 Lava Producer...");
+      getCondensator();
+      updateCost();
+      automateSleep(automateInterval);
+    }
+  } else if (
+    veluptuator > 0 &&
+    energyps > veluptuatorEnergyInput * 2 &&
+    lunarite > veluptuatorLunariteCost &&
+    gold > veluptuatorGoldCost &&
+    meteorite > veluptuatorMeteoriteCost
+  ) {
+    while (
+      energyps > veluptuatorEnergyInput * 2 &&
+      lunarite > veluptuatorLunariteCost &&
+      gold > veluptuatorGoldCost &&
+      meteorite > veluptuatorMeteoriteCost
+    ) {
+      automateLog("Attempt to buy Tier 4 Lava Producer...");
+      getVeluptuator();
+      updateCost();
+      automateSleep(automateInterval);
+    }
+  } else if (
+    extruder > 0 &&
+    energyps > extruderEnergyInput * 2 &&
+    lunarite > extruderLunariteCost &&
+    silicon > extruderSiliconCost &&
+    titanium > extruderTitaniumCost
+  ) {
+    while (
+      energyps > extruderEnergyInput * 2 &&
+      lunarite > extruderLunariteCost &&
+      silicon > extruderSiliconCost &&
+      titanium > extruderTitaniumCost
+    ) {
+      automateLog("Attempt to buy Tier 3 Lava Producer...");
+      getExtruder();
+      updateCost();
+      automateSleep(automateInterval);
+    }
+  } else if (
+    extractor > 0 &&
+    energyps > extractorEnergyInput * 2 &&
+    lunarite > extractorLunariteCost &&
+    silicon > extractorSiliconCost &&
+    titanium > extractorTitaniumCost
+  ) {
+    while (
+      energyps > extractorEnergyInput * 2 &&
+      lunarite > extractorLunariteCost &&
+      silicon > extractorSiliconCost &&
+      titanium > extractorTitaniumCost
+    ) {
+      automateLog("Attempt to buy Tier 2 Lava Producer...");
+      getExtractor();
+      updateCost();
+      automateSleep(automateInterval);
+    }
+  } else if (
+    crucible > 0 &&
+    lunarite > crucibleLunariteCost &&
+    gem > crucibleGemCost
+  ) {
+    while (
+      lunarite > crucibleLunariteCost &&
+      gem > crucibleGemCost
+    ) {
+      automateLog("Attempt to buy Tier 1 Lava Producer...");
+      getCrucible();
+      updateCost();
+      automateSleep(automateInterval);
+    }
+  }
+}
 
+function automatePlasma() {
+  if (
+    bath > 0 &&
+    energyps > bathEnergyInput * 2 &&
+    hydrogenps > bathHydrogenInput * 2 &&
+    heliumps > bathHeliumInput * 2 &&
+    gold > bathGoldCost &&
+    meteorite > bathMeteoriteCost &&
+    lava > bathLavaCost
+  ) {
+    while (
+      energyps > bathEnergyInput * 2 &&
+      hydrogenps > bathHydrogenInput * 2 &&
+      heliumps > bathHeliumInput * 2 &&
+      gold > bathGoldCost &&
+      meteorite > bathMeteoriteCost &&
+      lava > bathLavaCost
+    ) {
+      automateLog("Attempt to buy Tier 3 Plasma Producer...");
+      getBath();
+      updateCost();
+      automateSleep(automateInterval);
+    }
+  } else if (
+    plasmatic > 0 &&
+    plasmatic < 9 &&
+    energyps > plasmaticEnergyInput * 2 &&
+    heliumps > plasmaticHeliumInput * 2 &&
+    lunarite > plasmaticLunariteCost &&
+    meteorite > plasmaticMeteoriteCost &&
+    silicon > plasmaticSiliconCost
+  ) {
+    while (
+      plasmatic < 9 &&
+      energyps > plasmaticEnergyInput * 2 &&
+      heliumps > plasmaticHeliumInput * 2 &&
+      lunarite > plasmaticLunariteCost &&
+      meteorite > plasmaticMeteoriteCost &&
+      silicon > plasmaticSiliconCost
+    ) {
+      automateLog("Attempt to buy Tier 2 Plasma Producer...");
+      getPlasmatic();
+      updateCost();
+      automateSleep(automateInterval);
+    }
+  } else if (
+    heater > 0 &&
+    heater < 9 &&
+    energyps > heaterEnergyInput * 2 &&
+    hydrogenps > heaterHydrogenInput * 2 &&
+    silicon > heaterSiliconCost &&
+    gem > heaterGemCost &&
+    lunarite > heaterLunariteCost
+  ) {
+    while (
+      heater < 9 &&
+      energyps > heaterEnergyInput * 2 &&
+      hydrogenps > heaterHydrogenInput * 2 &&
+      silicon > heaterSiliconCost &&
+      gem > heaterGemCost &&
+      lunarite > heaterLunariteCost
+    ) {
+      automateLog("Attempt to buy Tier 1 Plasma Producer...");
+      getHeater();
+      updateCost();
+      automateSleep(automateInterval);
+    }
+  }
+}
+
+function automateMeteorite() {
+  if (
+    nebulous > 0 &&
+    plasmaps > nebulousPlasmaInput * 2 &&
+    gold > nebulousGoldCost &&
+    lunarite > nebulousLunariteCost &&
+    lava > nebulousLavaCost
+  ) {
+    while (
+      plasmaps > nebulousPlasmaInput * 2 &&
+      gold > nebulousGoldCost &&
+      lunarite > nebulousLunariteCost &&
+      lava > nebulousLavaCost
+    ) {
+      automateLog("Attempt to buy Tier 4 Meteorite Producer...");
+      getNebulous();
+      updateCost();
+      automateSleep(automateInterval);
+    }
+  } else if (
+    smasher > 0 &&
+    plasmaps > smasherPlasmaInput * 2 &&
+    gem > smasherGemCost &&
+    silicon > smasherSiliconCost &&
+    silver > smasherSilverCost
+  ) {
+    while (
+      plasmaps > smasherPlasmaInput * 2 &&
+      gem > smasherGemCost &&
+      silicon > smasherSiliconCost &&
+      silver > smasherSilverCost
+    ) {
+      automateLog("Attempt to buy Tier 3 Meteorite Producer...");
+      getSmasher();
+      updateCost();
+      automateSleep(automateInterval);
+    }
+  } else if (
+    web > 0 &&
+    plasmaps > webPlasmaInput * 2 &&
+    lunarite > webLunariteCost &&
+    silicon > webSiliconCost &&
+    uranium > webUraniumCost
+  ) {
+    while (
+      plasmaps > webPlasmaInput * 2 &&
+      lunarite > webLunariteCost &&
+      silicon > webSiliconCost &&
+      uranium > webUraniumCost
+    ) {
+      automateLog("Attempt to buy Tier 2 Meteorite Producer...");
+      getWeb();
+      updateCost();
+      automateSleep(automateInterval);
+    }
+  } else if (
+    printer > 0 &&
+    plasmaps > printerPlasmaInput * 2 &&
+    lunarite > printerLunariteCost &&
+    silicon > printerSiliconCost
+  ) {
+    while (
+      plasmaps > printerPlasmaInput * 2 &&
+      lunarite > printerLunariteCost &&
+      silicon > printerSiliconCost
+    ) {
+      automateLog("Attempt to buy Tier 1 Meteorite Producer...");
+      getPrinter();
+      updateCost();
+      automateSleep(automateInterval);
+    }
+  }
+}
